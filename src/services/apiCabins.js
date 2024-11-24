@@ -16,7 +16,7 @@ export async function createEditCabin(newCabin, id) {
 
   // console.log(newCabin.newCabinData.image.name);
 
-  console.log(newCabin);
+  // console.log(newCabin);
 
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
     "/",
