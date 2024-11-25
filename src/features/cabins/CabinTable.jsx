@@ -8,8 +8,15 @@ import useCabins from "./useCabins";
 function CabinTable() {
   const { isLoading, cabins } = useCabins();
 
+
+
   const [searchParams] = useSearchParams();
 
+
+  if (isLoading) return <Spinner />;
+
+
+  // filter cabins by discount
   const filterValue = searchParams.get("discount") || "all";
 
   let filterdCabins;
@@ -22,7 +29,35 @@ function CabinTable() {
     ? (filterdCabins = cabins)
     : (filterdCabins = []);
 
-  if (isLoading) return <Spinner />;
+  
+  
+  
+  //sort cabins
+
+  const sortValue = searchParams.get("sort") || "startDate-asc";
+
+  const [field, order] = sortValue.split("-");
+
+  const modifier = order === "asc" ? 1 : -1;
+
+
+  const sortedCabins = filterdCabins.sort((a, b) => {
+    if (typeof a[field] === "string") {
+      // Sort strings alphabetically
+      return a[field].localeCompare(b[field]) * modifier;
+    } else {
+      // Sort numbers
+      return (a[field] - b[field]) * modifier;
+    }
+  });
+
+
+  // const sortedCabins = filterdCabins.sort(
+  //   (a, b) => (a[field] - b[field]) * modifier
+  // );
+
+  // console.log(sortedCabins);
+
 
   return (
     <Menus>
@@ -38,7 +73,8 @@ function CabinTable() {
 
         <Table.Body
           // data={cabins}
-          data={filterdCabins}
+          // data={filterdCabins}
+          data={sortedCabins}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
 

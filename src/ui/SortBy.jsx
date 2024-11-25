@@ -13,8 +13,6 @@ const SortBy = ({ options }) => {
   };
 
 
-
-
   return (
     <Select
       options={options}
